@@ -46,13 +46,13 @@ const T: Record<StepKey, Milestone> = {
 
 // Step banner labels — one entry per step, shown during [activateAt, doneAt+5].
 const STEP_LABELS: { key: StepKey; title: string; role: "buyer" | "pancake" | "seller" }[] = [
-  { key: "buyerPost",     title: "Buyer posts a result request",         role: "buyer" },
-  { key: "sellerQuote",   title: "Seller offers a quote",                role: "seller" },
-  { key: "buyerAccept",   title: "Buyer accepts · contract minted",      role: "buyer" },
-  { key: "pancakeEscrow", title: "Pancake escrows $10 USDC on Base",     role: "pancake" },
-  { key: "sellerDeliver", title: "Seller delivers payload",              role: "seller" },
-  { key: "pancakeJudge",  title: "Judge evaluates payload vs rubric",    role: "pancake" },
-  { key: "pancakeSettle", title: "Settlement · $9.50 + $0.50 fee",       role: "pancake" },
+  { key: "buyerPost",     title: "Buyer posts request",     role: "buyer" },
+  { key: "sellerQuote",   title: "Seller quotes $10",       role: "seller" },
+  { key: "buyerAccept",   title: "Buyer accepts",           role: "buyer" },
+  { key: "pancakeEscrow", title: "Pancake escrows $10",     role: "pancake" },
+  { key: "sellerDeliver", title: "Seller delivers",         role: "seller" },
+  { key: "pancakeJudge",  title: "Judge: PASS",             role: "pancake" },
+  { key: "pancakeSettle", title: "Settled",                 role: "pancake" },
 ];
 
 export const ResultScene: React.FC = () => {
@@ -86,7 +86,7 @@ export const ResultScene: React.FC = () => {
       </div>
 
       <Caption
-        text="$10 task · 5% flat fee = $0.50 to Pancake. That $0.50 covers $0.10 stablecoin rail + $0.05 judge tokens, leaving $0.35 gross profit."
+        text="$10 task · 5% fee → $0.50 Pancake revenue · 70% gross margin"
         start={120}
         end={RESULT_DURATION - 30}
       />
@@ -155,7 +155,7 @@ const StepBanner: React.FC = () => {
         <div
           style={{
             fontFamily: FONTS.mono,
-            fontSize: 10,
+            fontSize: 12,
             letterSpacing: "0.22em",
             textTransform: "uppercase",
             color: COLORS.textDim,
@@ -164,7 +164,7 @@ const StepBanner: React.FC = () => {
           Step {currentIndex} / {totalSteps}
         </div>
 
-        <div style={{ fontSize: 14, fontWeight: 600, color: roleColor }}>
+        <div style={{ fontSize: 17, fontWeight: 600, color: roleColor }}>
           {current?.title ?? "Starting…"}
         </div>
       </div>
@@ -172,7 +172,7 @@ const StepBanner: React.FC = () => {
       <div
         style={{
           fontFamily: FONTS.mono,
-          fontSize: 10,
+          fontSize: 12,
           color: COLORS.textMuted,
           textAlign: "right",
         }}
@@ -217,7 +217,7 @@ const ColumnShell: React.FC<{
           background: tint,
           color: "#061014",
           fontWeight: 700,
-          fontSize: 17,
+          fontSize: 21,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -226,8 +226,8 @@ const ColumnShell: React.FC<{
         {initial}
       </div>
       <div>
-        <div style={{ fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em" }}>{name}</div>
-        <div style={{ fontSize: 11, color: COLORS.textMuted, marginTop: 2 }}>{subtitle}</div>
+        <div style={{ fontSize: 18, fontWeight: 600, letterSpacing: "-0.01em" }}>{name}</div>
+        <div style={{ fontSize: 13, color: COLORS.textMuted, marginTop: 2 }}>{subtitle}</div>
       </div>
     </div>
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>{children}</div>
@@ -245,9 +245,8 @@ const BuyerColumn: React.FC = () => {
         tint={COLORS.teal}
         frame={frame}
         details={[
-          "topic · 20-page EV market report",
-          "rubric · under 500 words · 2 citations",
-          <><b style={{ color: COLORS.primary }}>budget $10</b> · judge: claude-sonnet-4-6</>,
+          "EV market report · 500 words",
+          <><b style={{ color: COLORS.primary }}>$10 budget</b> · sonnet-4-6 judge</>,
         ]}
       />
       <StepBox
@@ -258,9 +257,8 @@ const BuyerColumn: React.FC = () => {
         frame={frame}
         details={[
           "contract rcc_K7mVjHxN",
-          "triggers escrow + rubric lock",
           <span style={{ color: COLORS.textDim }}>
-            verdict received · <b style={{ color: COLORS.primary }}>PASS</b>
+            verdict · <b style={{ color: COLORS.primary }}>PASS</b>
           </span>,
         ]}
         revealExtraAt={T.pancakeJudge.doneAt}
@@ -284,13 +282,12 @@ const PancakeColumn: React.FC = () => {
       <StepBox
         stepKey="pancakeEscrow"
         number="03"
-        title="Escrows $10.00 USDC"
+        title="Escrows $10 USDC"
         tint={COLORS.primary}
         frame={frame}
         details={[
-          "on-chain · base-sepolia",
-          "rubric_hash 0x9e1c… locked",
-          "buyer-signed, seller-bound",
+          "$10 USDC · Base Sepolia",
+          "rubric locked on-chain",
         ]}
       />
       <StepBox
@@ -300,12 +297,8 @@ const PancakeColumn: React.FC = () => {
         tint={COLORS.primary}
         frame={frame}
         details={[
-          "default: Pancake's judge model",
-          <span style={{ color: COLORS.textMuted }}>
-            <i>or any trusted 3rd party</i>
-          </span>,
           <>
-            score <b style={{ color: COLORS.primary, fontFamily: FONTS.mono }}>0.92</b> ≥ threshold 0.75 ·{" "}
+            score <b style={{ color: COLORS.primary, fontFamily: FONTS.mono }}>0.92</b> ≥ 0.75 ·{" "}
             <b style={{ color: COLORS.primary }}>PASS</b>
           </>,
         ]}
@@ -317,15 +310,8 @@ const PancakeColumn: React.FC = () => {
         tint={COLORS.primary}
         frame={frame}
         details={[
-          <>
-            <b style={{ color: COLORS.text, fontFamily: FONTS.mono }}>$9.50</b>
-            {" "}→ seller
-          </>,
-          <>
-            <b style={{ color: COLORS.primary, fontFamily: FONTS.mono }}>$0.50</b>
-            {" "}fee → Pancake <span style={{ color: COLORS.textDim }}>(5%)</span>
-          </>,
-          "webhook · result.contract.settled",
+          <><b style={{ color: COLORS.text, fontFamily: FONTS.mono }}>$9.50</b>{" "}→ seller</>,
+          <><b style={{ color: COLORS.primary, fontFamily: FONTS.mono }}>$0.50</b>{" "}fee → Pancake <span style={{ color: COLORS.textDim }}>(5%)</span></>,
         ]}
       />
     </ColumnShell>
@@ -343,8 +329,7 @@ const SellerColumn: React.FC = () => {
         tint={COLORS.warning}
         frame={frame}
         details={[
-          <><b style={{ fontFamily: FONTS.mono }}>$10.00</b> price · ETA ~40s</>,
-          "judge: claude-sonnet-4-6",
+          <><b style={{ fontFamily: FONTS.mono }}>$10.00</b> · ETA ~40s</>,
           "quote rcq_5xQ2bKvM",
         ]}
       />
@@ -355,9 +340,7 @@ const SellerColumn: React.FC = () => {
         tint={COLORS.warning}
         frame={frame}
         details={[
-          "summary · RSA-signed",
-          "submitted to Pancake judge",
-          <span style={{ color: COLORS.textDim }}>status · judging</span>,
+          "RSA-signed · → Pancake judge",
         ]}
       />
     </ColumnShell>
@@ -413,7 +396,7 @@ const StepBox: React.FC<{
         border: `1px solid ${borderColor}`,
         background,
         transition: "none",
-        boxShadow: active ? `0 0 22px ${tint}33` : "none",
+        boxShadow: active ? `0 0 28px ${tint}55` : "none",
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
@@ -428,18 +411,18 @@ const StepBox: React.FC<{
             alignItems: "center",
             justifyContent: "center",
             color: done ? "#061014" : active ? tint : COLORS.textDim,
-            fontSize: 10,
+            fontSize: 12,
             fontWeight: 700,
             fontFamily: FONTS.mono,
             opacity: pulse,
-            boxShadow: active ? `0 0 10px ${tint}66` : "none",
+            boxShadow: active ? `0 0 14px ${tint}99` : "none",
           }}
         >
           {done ? "✓" : number}
         </span>
         <div
           style={{
-            fontSize: 13.5,
+            fontSize: 16,
             fontWeight: 600,
             letterSpacing: "-0.01em",
             color: pending ? COLORS.textMuted : COLORS.text,
@@ -454,7 +437,7 @@ const StepBox: React.FC<{
           display: "flex",
           flexDirection: "column",
           gap: 3,
-          fontSize: 11.5,
+          fontSize: 14,
           lineHeight: 1.5,
           color: pending ? COLORS.textDim : COLORS.textMuted,
         }}
@@ -536,7 +519,7 @@ const UnitEconPanel: React.FC = () => {
           <div
             style={{
               fontFamily: FONTS.mono,
-              fontSize: 10,
+              fontSize: 12,
               letterSpacing: "0.22em",
               textTransform: "uppercase",
               color: COLORS.textDim,
@@ -544,7 +527,7 @@ const UnitEconPanel: React.FC = () => {
           >
             Pancake · unit economics
           </div>
-          <div style={{ marginTop: 6, fontSize: 15, color: COLORS.text }}>
+          <div style={{ marginTop: 6, fontSize: 18, color: COLORS.text }}>
             <span style={{ fontFamily: FONTS.mono }}>$10.00</span>{" "}
             <span style={{ color: COLORS.textMuted }}>×</span>{" "}
             <span style={{ color: COLORS.primary, fontWeight: 600 }}>5% flat</span>{" "}
@@ -559,13 +542,13 @@ const UnitEconPanel: React.FC = () => {
             >
               $0.50
             </span>{" "}
-            <span style={{ fontSize: 11.5, color: COLORS.textMuted }}>Pancake revenue per txn</span>
+            <span style={{ fontSize: 14, color: COLORS.textMuted }}>Pancake revenue per txn</span>
           </div>
         </div>
         <div
           style={{
             fontFamily: FONTS.mono,
-            fontSize: 11,
+            fontSize: 14,
             color: COLORS.textMuted,
             textAlign: "right",
           }}
@@ -630,7 +613,7 @@ const EconSegment: React.FC<{
       style={{
         position: "relative",
         color: fill > 0.3 ? "#061014" : COLORS.textMuted,
-        fontSize: 11.5,
+        fontSize: 14,
         fontWeight: 700,
         fontFamily: FONTS.mono,
         lineHeight: 1.1,
@@ -639,7 +622,7 @@ const EconSegment: React.FC<{
       {label}
       <div
         style={{
-          fontSize: 9,
+          fontSize: 11,
           fontWeight: 500,
           letterSpacing: "0.05em",
           textTransform: "uppercase",

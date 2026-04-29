@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: #060F11;
+    color: #E8F2E8;
+    font-family: "Inter", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer utilities {
+  .grain {
+    background-image: radial-gradient(rgba(124, 203, 2, 0.04) 1px, transparent 1px);
+    background-size: 3px 3px;
+  }
+  .glow {
+    box-shadow: 0 0 0 1px rgba(124, 203, 2, 0.15), 0 0 40px -10px rgba(124, 203, 2, 0.3);
+  }
+  .text-gradient {
+    background: linear-gradient(180deg, #E8F2E8 0%, #7CCB02 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .caret::after {
+    content: "▋";
+    color: #7CCB02;
+    margin-left: 2px;
+    animation: blink 1s step-start infinite;
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+}

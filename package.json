@@ -1,0 +1,43 @@
+{
+  "name": "pancake-agent-demo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 4000",
+    "build": "next build",
+    "start": "next start -p 4000",
+    "lint": "next lint",
+    "studio": "remotion studio remotion/index.ts",
+    "render": "npm run render:site && npm run render:v1 && npm run render:v2 && npm run render:checkout && npm run render:result && npm run render:summary && npm run render:combined",
+    "render:site": "remotion render remotion/index.ts site videos/site.mp4",
+    "render:v1": "remotion render remotion/index.ts v1 videos/v1.mp4",
+    "render:v2": "remotion render remotion/index.ts v2 videos/v2.mp4",
+    "render:checkout": "remotion render remotion/index.ts checkout videos/checkout.mp4",
+    "render:result": "remotion render remotion/index.ts result videos/result.mp4",
+    "render:result-slow": "remotion render remotion/index.ts result-slow videos/result-slow.mp4",
+    "render:summary": "remotion render remotion/index.ts summary videos/summary.mp4",
+    "record:checkout": "node scripts/record-checkout.mjs",
+    "render:pancake-demo": "remotion render remotion/index.ts pancake-demo videos/pancake-demo.mp4",
+    "render:combined": "remotion render remotion/index.ts combined videos/combined.mp4"
+  },
+  "dependencies": {
+    "@remotion/bundler": "^4.0.450",
+    "@remotion/cli": "^4.0.450",
+    "@remotion/renderer": "^4.0.450",
+    "next": "^16.2.4",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "remotion": "^4.0.450",
+    "stripe": "^17.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.2",
+    "@types/react": "19.0.2",
+    "@types/react-dom": "19.0.2",
+    "autoprefixer": "10.4.20",
+    "playwright": "^1.59.1",
+    "postcss": "8.4.49",
+    "tailwindcss": "3.4.17",
+    "typescript": "5.7.2"
+  }
+}

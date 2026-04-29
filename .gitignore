@@ -1,0 +1,22 @@
+node_modules/
+.next/
+out/
+.DS_Store
+*.log
+.env*.local
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Rendered / recorded videos — derived artifacts, regenerate with npm run render / record
+videos/*.webm
+videos/*.mp4
+!videos/.gitkeep
+public/videos/*.webm
+public/videos/*.mp4
+
+# TypeScript incremental build cache
+tsconfig.tsbuildinfo
